@@ -12,7 +12,7 @@ import AVFoundation // Sound module
 class ViewController: UIViewController {
     
     // Dictionary (uses key value pairs)
-    let eggTimes: [String : Int] = ["Soft": 3, "Medium": 420, "Hard": 720]
+    let eggTimes: [String : Int] = ["Soft": 300, "Medium": 420, "Hard": 720]
     var secondsPassed = 0
     var totalTime = 0
     var timer = Timer()
@@ -28,6 +28,7 @@ class ViewController: UIViewController {
         let hardness = sender.currentTitle!
         totalTime = eggTimes[hardness]!
         doneTitle.text = hardness
+        player.stop() // Stops the alarm if the user clicks the button consecutably
         
         // Resets things back to zero
         eggProgress.progress = 0.0
@@ -39,13 +40,14 @@ class ViewController: UIViewController {
                 self.secondsPassed += 1
                 let percentageProgress: Float = Float(self.secondsPassed) / Float(self.totalTime)
                 self.eggProgress.progress = Float(percentageProgress)
-                print(percentageProgress)
+                
             } else {
                 // Stops the timer
                 Timer.invalidate()
                 self.doneTitle.text = "Done"
                 self.playSound()
-
+//                UIImpactFeedbackGenerator(style: .heavy).impactOccurred() // Makes the phone vibrate
+                
             }
         }
         
@@ -53,12 +55,10 @@ class ViewController: UIViewController {
     
     func playSound() {
         // Gets a refrence to the audio file
-        // Passes user input
         let url = Bundle.main.url(forResource: "alarm_sound", withExtension: "mp3")
         player = try! AVAudioPlayer(contentsOf: url!)
         player.play()
         
-
     }
     
 }
