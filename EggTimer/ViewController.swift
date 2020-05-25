@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var eggProgress: UIProgressView!
     
     @IBAction func hardnessSelected(_ sender: UIButton) {
-        
+        UIApplication.shared.isIdleTimerDisabled = true // disables sleep mode
         timer.invalidate() // stops the timer
         let hardness = sender.currentTitle!
         totalTime = eggTimes[hardness]!
@@ -46,6 +46,7 @@ class ViewController: UIViewController {
                 Timer.invalidate()
                 self.doneTitle.text = "Done"
                 self.playSound()
+                UIApplication.shared.isIdleTimerDisabled = false
 //                UIImpactFeedbackGenerator(style: .heavy).impactOccurred() // Makes the phone vibrate
                 
             }
